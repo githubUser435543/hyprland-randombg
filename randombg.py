@@ -7,20 +7,21 @@ import os
 import re
 import random
 
-
+# Configure these:
 IMAGES_DIRECTORY_PATH: str = "/home/ethan/backgrounds"
 HYPRPAPER_PATH: str = "/home/ethan/.config/hypr/hyprpaper.conf"
-FILE_FORMATS = ["png", "jpeg", "gif", "webp", "jpg"]
+VALID_FILE_FORMATS = ["png", "jpeg", "gif", "webp", "jpg"]
+
 # takes in a list of file names
 # returns one with the valid file formats
-def filterImages(files: [str], validFileFormats) -> [str]:
+def filterImages(files: [str]) -> [str]:
     breakAtDot = lambda file: file.split(".")
     extentionSeperatedFiles: [[str]] = map(breakAtDot, files)
     
     getLastExtention = lambda extentionSeperatedFile: extentionSeperatedFile[-1]
     fileExtentions: [str] = map(getLastExtention, extentionSeperatedFiles)
 
-    isImg = lambda fileExtention: fileExtention in validFileFormats
+    isImg = lambda fileExtention: fileExtention in VALID_FILE_FORMATS
     areImages: [bool] = list(map(isImg, fileExtentions))
     
     validFiles: [str] = []
@@ -33,8 +34,13 @@ def filterImages(files: [str], validFileFormats) -> [str]:
 # takes in a str with the path
 # returns a str the absolute path of a random 
 # image in the directory 
-def getBackground(directory: str) -> str:
+def getRandomBackground(directory: str) -> str:
     dirListing: [str] = os.listdir(directory)
-        
+    validBackgrounds: [str]  = filterImages(dirListing)
+    chosenPicture: int = random.choice(validBackgrounds)
+    return chosenPicture
 
+
+
+print(getRandomBackground(IMAGES_DIRECTORY_PATH))
 
