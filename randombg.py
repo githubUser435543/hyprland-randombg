@@ -1,8 +1,5 @@
 #!/usr/bin/python3
 
-# TODO: gen random number
-# TODO: run hyprpaper with random wallpaper
-
 import os
 import re
 import random
