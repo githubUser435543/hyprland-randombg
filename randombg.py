@@ -6,6 +6,7 @@
 import os
 import re
 import random
+import fileinput
 
 # Configure these:
 IMAGES_DIRECTORY_PATH: str = "/home/ethan/backgrounds"
@@ -36,11 +37,19 @@ def filterImages(files: [str]) -> [str]:
 # image in the directory 
 def getRandomBackground(directory: str) -> str:
     dirListing: [str] = os.listdir(directory)
-    validBackgrounds: [str]  = filterImages(dirListing)
+    validBackgrounds: [str] = filterImages(dirListing)
     chosenPicture: int = random.choice(validBackgrounds)
-    return chosenPicture
+    absolutePathOfChosenPicture = IMAGES_DIRECTORY_PATH + "/" + chosenPicture
+    return absolutePathOfChosenPicture
 
+def setConfig(backgroundImagePath: str):
+    preload: str = "preload = " + backgroundImagePath
+    wallpaper: str = "wallpaper = monitor, " + backgroundImagePath
+    newConfig: str = "\n".join([preload, wallpaper])
+    
+    with open(HYPRPAPER_PATH, "w") as hyperpaperConfig:
+        hyperpaperConfig.write(newConfig)
 
+setConfig(getRandomBackground(IMAGES_DIRECTORY_PATH))
 
-print(getRandomBackground(IMAGES_DIRECTORY_PATH))
 
